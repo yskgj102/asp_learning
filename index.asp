@@ -2,8 +2,9 @@
 <body>
   hellp
 <%
-Name=ScriptEngune
+Name=ScriptEngine
 Response.Write Name
+
 %>
 </body>
 </HTML>
