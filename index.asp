@@ -1,10 +1,10 @@
 <HTML>
-<body>
+<BODY>
   hellp
 <%
 Name=ScriptEngine
 Response.Write Name
 
 %>
-</body>
+</BODY>
 </HTML>
