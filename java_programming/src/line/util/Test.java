@@ -1,4 +1,4 @@
-package java_programming;
+package line.util;
 
 public class Test {
 
