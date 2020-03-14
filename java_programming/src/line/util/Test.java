@@ -1,10 +1,18 @@
 package line.util;
 
+import java.math.BigDecimal;
+
 public class Test {
 
 	public static void main(String[] args) {
-		// TODO 自動生成されたメソッド・スタブ
-System.out.println("fsdfsfjj");
+		_ProductLine movingLine=new _ProductLine("movingLine");
+		movingLine.addProducts("A", new BigDecimal("4.2"),25);
+		movingLine.addProducts("B", new BigDecimal("5"),15);
+		movingLine.addProducts("C", new BigDecimal("10"),10);
+
 	}
 
+	public static void output() {
+		
+	}
 }
