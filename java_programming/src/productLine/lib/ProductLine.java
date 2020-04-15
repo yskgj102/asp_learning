@@ -12,7 +12,7 @@ public class ProductLine {
 	private AbstractLineStrategy lineStrategy = null;
 	private BigDecimal pitchTime = null;
 	private List<_Product> productList = new ArrayList<>();
-	private List<Integer> emptyList = new ArrayList<>();/* M_n*/
+	private List<Integer> emptyList = new ArrayList<>();/*M_n*/
 
 	public ProductLine(AbstractLineStrategy strategy) {
 		this.lineStrategy = strategy;
@@ -42,10 +42,10 @@ public class ProductLine {
 
 	public BigDecimal getPitchTime() {
 		return pitchTime;
-	}//
+	}
 
-	public void setPitchTime(BigDecimal pitchTime) {//
-		this.pitchTime = pitchTime;//
+	public void setPitchTime(BigDecimal pitchTime) {
+		this.pitchTime = pitchTime;
 	}
 
 	public List<Integer> getEmptyList() {
@@ -142,10 +142,9 @@ public class ProductLine {
 		System.out.println("AveragePitchTime" + getAveragePitchTime());
 		System.out.println("IdlePitchTime" + getIdlePitchTime());
 		System.out.println("EmptyPitchNumber:" + getEmptyPitchNumber());
-
 		System.out.println("EmptyList:" + getEmptyList());
 		System.out.println("EmptyTime:" + getEmptyTime());
-		System.out.println("i name time");
+		System.out.println("");
 		for (int i_production = 0; i_production < productNum; i_production++) {
 			_Product p = getProductList().get(i_production);
 			Integer emptyNumber = 0;

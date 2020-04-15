@@ -10,11 +10,12 @@ import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import productLine.lib.ProductLine;
 import productLine.lib._Product;
 
 public class Calculator {
-	private final static int SCALE_INT = 20;
+	private final static int SCALE_INT = 1000;
 
 	public static void sortProductListByName(List<_Product> productList) {
 		Collections.sort(productList, new Comparator<_Product>() {
@@ -32,7 +33,7 @@ public class Calculator {
 		});
 	}
 
-	/**	 * É³#Ó	 * @param productList	 * @return	 * @throws IOException	 * @throws ClassNotFoundException	 */
+
 	public static BigDecimal getSafedPitchTime(List<_Product> productList) throws ClassNotFoundException, IOException {
 		List<_Product> tmpProductList = deepcopy(productList);
 		/* ÀFF*/ Calculator.sortProductListByTimeDesc(tmpProductList);
@@ -53,9 +54,13 @@ public class Calculator {
 			throws ClassNotFoundException, IOException {
 		BigDecimal min_pitch_time = BigDecimal.valueOf(0);
 		List<_Product> tmpProductList = deepcopy(productList);
-		/* ÖZJÚ*/ Calculator.sortProductListByTimeDesc(tmpProductList);
+	Calculator.sortProductListByTimeDesc(tmpProductList);
 		min_pitch_time = tmpProductList.get(0).getTime().divide(BigDecimal.valueOf(2), SCALE_INT, RoundingMode.HALF_UP);
 		return min_pitch_time;
+	}
+
+	public static boolean isAvairablePitchTime(ProductLine productLine) throws ClassNotFoundException, IOException {
+			return productLine.getPitchTime().compareTo(productLine.getMinimumPitchTime()) >= 0;
 	}
 
 	public static int getTotalProductionQuantity(List<_Product> productList) {
@@ -75,8 +80,8 @@ public class Calculator {
 		List<_Product> productList = line.getProductList();
 		List<Integer> emptyList = line.getEmptyList();
 		if (pitchTime != null && emptyList.size() != 0) {
-			/* (N+M_n+1)T-S_N*/ return pitchTime
-					.multiply(BigDecimal.valueOf(productList.size() + 1 + emptyList.get(emptyList.size() - 1)))
+			/* (N+M_n+1)T-S_N*/
+			return pitchTime.multiply(BigDecimal.valueOf(productList.size() + 1 + emptyList.get(emptyList.size() - 1)))
 					.subtract(getTotalProductionTime(productList));
 		}
 		return null;
@@ -96,26 +101,23 @@ public class Calculator {
 		}
 	}
 
-	/**	 * J»Ãí	 * SN<=(N+MN+1)T¢.ÆÊ/ïå	 * @param line	 * @return AµÐÝtrue	 */
-	public static boolean isAvailableProductLine(ProductLine line) {
+	public static boolean hasAvailableProductLine(ProductLine line) {
 		return isAvailableProductList(line.getProductList(), line.getEmptyList(), line.getPitchTime());
 	}
 
-	/**	 *	 * Sn<=(n+Mn+1)T  &ølq}	 * @param productList	 * @param emptyList	 * @param pitchTime	 * @return	 */
 	public static boolean isAvailableProductList(List<_Product> productList, List<Integer> emptyList,
 			BigDecimal pitchTime) {
 		if (productList.size() == 0 || emptyList.size() == 0) {
-			System.out.println("WÓaqfÆÕ");
+			System.out.println("is Empty");
 			return true;
 		}
 		BigDecimal leftSideEq = getTotalProductionTime(productList);
 		BigDecimal rightSideEq = BigDecimal.valueOf(getTotalProductionQuantity(productList)
 				+ emptyList.get(getTotalProductionQuantity(productList) - 1) + 1).multiply(pitchTime);
-		/* sb<Mê»-1*/ int compare_int = leftSideEq.compareTo(rightSideEq);
+		int compare_int = leftSideEq.compareTo(rightSideEq);
 		return compare_int <= 0;
 	}
 
-	/**	 * ý©XbE	 * @param calculationProductList	 * @param productLine	 * @param productName	 * @return	 */
 	public static BigDecimal getSufficiencyRateOfX(List<_Product> calculationProductList, ProductLine productLine,
 			_Product product) {
 		if (calculationProductList.size() == 1) {
@@ -128,7 +130,6 @@ public class Calculator {
 				SCALE_INT, RoundingMode.HALF_UP);
 	}
 
-	/**	 *	 */
 	public static BigDecimal getRateOfTheProduct(ProductLine productLine, _Product product) {
 		int theNumberOfProduct = productLine.getQuantityOfSameProduct(product);
 		int theTptalProductNumber = productLine.getTotalProductionQuantity();

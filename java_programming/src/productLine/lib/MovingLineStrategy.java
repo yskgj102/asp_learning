@@ -12,8 +12,8 @@ import java.util.List;
 import productLine.util.Calculator;
 
 public class MovingLineStrategy extends AbstractLineStrategy {
-	private static final int HUGE_NUMBER = 100000;
-	private static final BigDecimal TINY_VALUE = BigDecimal.valueOf(0.00000000000000000001);
+	private static final Integer HUGE_NUMBER = 1000000000;
+	private static final BigDecimal TINY_VALUE = BigDecimal.valueOf(0.001);
 
 	@Override
 	protected void setLineName() {
@@ -25,11 +25,12 @@ public class MovingLineStrategy extends AbstractLineStrategy {
 		ProductLine calculatedProductLine = null;
 		/*Pass ALGORITHM1 if fixing the pitch time*/
 		if (productLine.getPitchTime() != null) {
-			if (productLine.getPitchTime().compareTo(productLine.getMinimumPitchTime()) == -1) {
-				throw new Exception(
-						"" + "" + productLine.getPitchTime() + "eGÝ" + productLine.getMinimumPitchTime() + "" + "");
+			if (Calculator.isAvairablePitchTime(productLine)) {
+				calculatedProductLine = executeALGORITHM1(productLine);
+			} else {
+				throw new Exception("" + "PitchTime=" + productLine.getPitchTime() + " must be less than "
+						+ productLine.getMinimumPitchTime() + "" + "");
 			}
-			calculatedProductLine = executeALGORITHM1(productLine);
 		}
 		/*Pass ALGORITHM2 if not fixing the pitch time*/
 		else {
@@ -60,7 +61,7 @@ public class MovingLineStrategy extends AbstractLineStrategy {
 				BigDecimal sufficiencyRate = BigDecimal.valueOf(HUGE_NUMBER);
 				int i_rem = HUGE_NUMBER;
 				int emp_num_rem = 0;
-				for (int i = 0; i < tmpProductList.size(); i++) { // qÿ4ãa`ELïÓ×Ôó5kâï3£ÞmÚH
+				for (int i = 0; i < tmpProductList.size(); i++) { /**/
 					calculatedProductList.add(tmpProductList.get(i));
 					int emp_num = 0;
 					if (calculatedEmptyList.size() >= 1) {
@@ -84,7 +85,7 @@ public class MovingLineStrategy extends AbstractLineStrategy {
 					}
 					calculatedProductList.remove(calculatedProductList.size() - 1);
 					calculatedEmptyList.remove(calculatedEmptyList.size() - 1);
-				} // for(tmpProductList)
+				} /*for(tmpProductList)*/
 				if (i_rem != HUGE_NUMBER) {
 					calculatedProductList.add(tmpProductList.get(i_rem));
 					calculatedEmptyList.add(emp_num_rem);
@@ -95,29 +96,39 @@ public class MovingLineStrategy extends AbstractLineStrategy {
 				if (tmpProductList.size() == 0 | roopCounter >= HUGE_NUMBER) {
 					break;
 				}
-			} // for(;;)
+			} /*for(;;)*/
 			calculatedProductLine.addProductList(calculatedProductList);
 			calculatedProductLine.addEmptyList(calculatedEmptyList);
 		}
 		return calculatedProductLine;
 	}
 
-	private static ProductLine executeALGORITHM2(ProductLine productLine) throws ClassNotFoundException, IOException {
+	private static ProductLine executeALGORITHM2(ProductLine productLine) throws Exception {
 		ProductLine calculatedProductLine = null;
 		int roop_counter = 0;
 		BigDecimal dt = BigDecimal.valueOf(0);
 		for (;;) {
 			System.out.println("roopcounter=" + roop_counter);
+			calculatedProductLine = null;
 			calculatedProductLine = new ProductLine(productLine.getLineStrategy(),
 					productLine.getIdlePitchTime().add(dt));
 			calculatedProductLine.addProductList(productLine.getProductList());
 			calculatedProductLine.addEmptyList(productLine.getEmptyList());
-			calculatedProductLine = executeALGORITHM1(calculatedProductLine);
+			if (Calculator.isAvairablePitchTime(calculatedProductLine)) {
+				calculatedProductLine = executeALGORITHM1(calculatedProductLine);
+				if (calculatedProductLine.getEmptyPitchNumber() == 0) {
+					break;
+				}
+			} else {
+				System.out.println("" + "PitchTime=" + calculatedProductLine.getPitchTime() + " must be Larger than "
+						+ calculatedProductLine.getMinimumPitchTime() + "" + "");
+			}
 			dt = dt.add(TINY_VALUE);
 			roop_counter++;
-			if (calculatedProductLine.getEmptyPitchNumber() == 0 || roop_counter >= HUGE_NUMBER) {
+			if (roop_counter > HUGE_NUMBER) {
 				break;
 			}
+
 		}
 		return calculatedProductLine;
 	}
