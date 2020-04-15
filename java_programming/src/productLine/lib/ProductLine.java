@@ -136,11 +136,11 @@ public class ProductLine {
 		int productNum = getProductList().size();
 		System.out.println("LineName:" + getLineName());
 		System.out.println("PitchTime:" + getPitchTime());
-		System.out.println("TotalProductionTime" + getTotalProductionTime());
-		System.out.println("TotalProductionQuantity" + getTotalProductionQuantity());
-		System.out.println("SafedPitchTime" + getSafedPitchTime());
-		System.out.println("AveragePitchTime" + getAveragePitchTime());
-		System.out.println("IdlePitchTime" + getIdlePitchTime());
+		System.out.println("TotalProductionTime:" + getTotalProductionTime());
+		System.out.println("TotalProductionQuantity:" + getTotalProductionQuantity());
+		System.out.println("SafedPitchTime:" + getSafedPitchTime());
+		System.out.println("AveragePitchTime:" + getAveragePitchTime());
+		System.out.println("IdlePitchTime:" + getIdlePitchTime());
 		System.out.println("EmptyPitchNumber:" + getEmptyPitchNumber());
 		System.out.println("EmptyList:" + getEmptyList());
 		System.out.println("EmptyTime:" + getEmptyTime());

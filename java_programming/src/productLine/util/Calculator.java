@@ -15,7 +15,7 @@ import productLine.lib.ProductLine;
 import productLine.lib._Product;
 
 public class Calculator {
-	private final static int SCALE_INT = 1000;
+	private final static int SCALE_INT = 11;
 
 	public static void sortProductListByName(List<_Product> productList) {
 		Collections.sort(productList, new Comparator<_Product>() {
@@ -42,7 +42,7 @@ public class Calculator {
 		for (int i = 0; i < tmpProductList.size(); i++) {
 			total_product_time_i = total_product_time_i.add(tmpProductList.get(i).getTime());
 			BigDecimal tmp_pitch_time_i = total_product_time_i.divide(BigDecimal.valueOf((i + 1) + 1), SCALE_INT,
-					RoundingMode.HALF_UP);
+					RoundingMode.UP);
 			if (max_pitch_time.compareTo(tmp_pitch_time_i) == -1) {
 				max_pitch_time = tmp_pitch_time_i;
 			}
@@ -55,7 +55,7 @@ public class Calculator {
 		BigDecimal min_pitch_time = BigDecimal.valueOf(0);
 		List<_Product> tmpProductList = deepcopy(productList);
 	Calculator.sortProductListByTimeDesc(tmpProductList);
-		min_pitch_time = tmpProductList.get(0).getTime().divide(BigDecimal.valueOf(2), SCALE_INT, RoundingMode.HALF_UP);
+		min_pitch_time = tmpProductList.get(0).getTime().divide(BigDecimal.valueOf(2), SCALE_INT, RoundingMode.UP);
 		return min_pitch_time;
 	}
 
@@ -89,13 +89,13 @@ public class Calculator {
 
 	public static BigDecimal getIdlePitchTime(List<_Product> productList) {
 		return getTotalProductionTime(productList).divide(BigDecimal.valueOf(productList.size() + 1), SCALE_INT,
-				RoundingMode.HALF_UP);
+				RoundingMode.UP);
 	}
 
 	public static BigDecimal getAveragePitchTime(List<_Product> productList) {
 		if (productList.size() != 0) {
 			return getTotalProductionTime(productList).divide(BigDecimal.valueOf(productList.size()), SCALE_INT,
-					RoundingMode.HALF_UP);
+					RoundingMode.UP);
 		} else {
 			return null;
 		}
@@ -127,14 +127,14 @@ public class Calculator {
 		int theNumberOfProductFromCalculationgProductList = getQuantityOfSameProduct(calculationProductList, product);
 		return BigDecimal.valueOf(theNumberOfProductFromCalculationgProductList - 1).divide(
 				getRateOfTheProduct(productLine, product).multiply(BigDecimal.valueOf(theNumberOfProduct - 1)),
-				SCALE_INT, RoundingMode.HALF_UP);
+				SCALE_INT, RoundingMode.UP);
 	}
 
 	public static BigDecimal getRateOfTheProduct(ProductLine productLine, _Product product) {
 		int theNumberOfProduct = productLine.getQuantityOfSameProduct(product);
 		int theTptalProductNumber = productLine.getTotalProductionQuantity();
 		return BigDecimal.valueOf(theNumberOfProduct).divide(BigDecimal.valueOf(theTptalProductNumber), SCALE_INT,
-				RoundingMode.HALF_UP);
+				RoundingMode.UP);
 	}
 
 	public static int getQuantityOfSameProduct(List<_Product> productList, _Product product) {
