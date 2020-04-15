@@ -134,25 +134,25 @@ public class ProductLine {
 
 	public void output() throws ClassNotFoundException, IOException {
 		int productNum = getProductList().size();
-		System.out.println("EtÝå:" + getLineName());
-		System.out.println("" + getPitchTime());
-		System.out.println("" + getTotalProductionTime());
-		System.out.println("" + getTotalProductionQuantity());
-		System.out.println("" + getSafedPitchTime());
-		System.out.println("" + getAveragePitchTime());
-		System.out.println("" + getIdlePitchTime());
-		System.out.println("´v÷K>0:" + getEmptyPitchNumber());
+		System.out.println("LineName:" + getLineName());
+		System.out.println("PitchTime:" + getPitchTime());
+		System.out.println("TotalProductionTime" + getTotalProductionTime());
+		System.out.println("TotalProductionQuantity" + getTotalProductionQuantity());
+		System.out.println("SafedPitchTime" + getSafedPitchTime());
+		System.out.println("AveragePitchTime" + getAveragePitchTime());
+		System.out.println("IdlePitchTime" + getIdlePitchTime());
+		System.out.println("EmptyPitchNumber:" + getEmptyPitchNumber());
 
-		System.out.println("" + getEmptyList());
-		System.out.println("" + getEmptyTime());
-		System.out.println("");
+		System.out.println("EmptyList:" + getEmptyList());
+		System.out.println("EmptyTime:" + getEmptyTime());
+		System.out.println("i name time");
 		for (int i_production = 0; i_production < productNum; i_production++) {
 			_Product p = getProductList().get(i_production);
 			Integer emptyNumber = 0;
 			if (i_production != 0) {
 				emptyNumber = getEmptyList().get(i_production) - getEmptyList().get(i_production - 1);
 				for (int i = 0; i < emptyNumber; i++) {
-					System.out.println("B;9@B²");
+					System.out.println("i name time");
 				}
 			}
 			System.out.println((i_production + 1) + " " + p.getName() + " " + p.getTime());

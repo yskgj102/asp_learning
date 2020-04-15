@@ -97,7 +97,7 @@ public class MovingLineStrategy extends AbstractLineStrategy {
 				}
 			} // for(;;)
 			calculatedProductLine.addProductList(calculatedProductList);
-			//calculatedProductLine.addEmptyList(emp_num_rem);
+			calculatedProductLine.addEmptyList(calculatedEmptyList);
 		}
 		return calculatedProductLine;
 	}
