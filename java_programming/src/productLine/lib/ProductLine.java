@@ -1,70 +1,161 @@
-package line.util;
 
+package productLine.lib;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _ProductLine {
-	private String name;
-	private List<_Product> productList = new ArrayList<>();
+import productLine.util.Calculator;
+
+public class ProductLine {
+	private AbstractLineStrategy lineStrategy = null;
 	private BigDecimal pitchTime = null;
-	private _ProductLine calculatedProductLine;
+	private List<_Product> productList = new ArrayList<>();
+	private List<Integer> emptyList = new ArrayList<>();/* M_n*/
 
-	public _ProductLine(String name) {
-		this.name = name;
+	public ProductLine(AbstractLineStrategy strategy) {
+		this.lineStrategy = strategy;
 	}
 
-	public _ProductLine(String name, BigDecimal pitchTime) {
-		this.name = name;
+	public ProductLine(AbstractLineStrategy strategy, double pitchTime) {
+		this.lineStrategy = strategy;
+		this.pitchTime = BigDecimal.valueOf(pitchTime);
+	}
+
+	public ProductLine(AbstractLineStrategy strategy, BigDecimal pitchTime) {
+		this.lineStrategy = strategy;
 		this.pitchTime = pitchTime;
 	}
 
-	public void setPitchTime(BigDecimal pitchTime) {
-		this.pitchTime = pitchTime;
+	public AbstractLineStrategy getLineStrategy() {
+		return lineStrategy;
 	}
 
-	public String getName() {
-		return name;
+	public ProductLine getCalculatedProductLine() throws Exception {
+		return lineStrategy.getCalculateProductdLine(this);
 	}
 
-	public void addProduct(String name, BigDecimal time) {
-		_Product product = new _Product(name, time);
-		this.productList.add(product);
-	}
-
-	public void addProducts(String name, BigDecimal time, int quantity) {
-		_Product product = new _Product(name, time);
-		for (int i = 0; i < quantity; i++) {
-			this.productList.add(product);
-		}
+	public String getLineName() {
+		return lineStrategy.getLineName();
 	}
 
 	public BigDecimal getPitchTime() {
 		return pitchTime;
+	}//
+
+	public void setPitchTime(BigDecimal pitchTime) {//
+		this.pitchTime = pitchTime;//
 	}
 
-	public BigDecimal getTotalProductTime() {
-		BigDecimal totalProductTime = new BigDecimal("0");
+	public List<Integer> getEmptyList() {
+		return emptyList;
+	}
 
-		for (int i = 0; i < productList.size(); i++) {
-			totalProductTime = totalProductTime.add(productList.get(i).getTime());
+	public int getEmptyPitchNumber() {
+		if (emptyList.size() >= 1) {
+			return emptyList.get(emptyList.size() - 1);
 		}
-		return totalProductTime;
+		return 0;
+	}
+
+	public void addProduct(_Product _product) throws Exception {
+		productList.add(_product);
+		emptyList.add(0);
+	}
+
+	public void addProducts(_Product _product, int quantity) throws Exception {
+		for (int i = 0; i < quantity; i++) {
+			addProduct(_product);
+		}
+	}
+
+	public void addProducts(String name, double time, int quantity) throws Exception {
+		_Product _product = new _Product(name, time);
+		addProducts(_product, quantity);
+	}
+
+	public void addProductList(List<_Product> productList) {
+		this.productList.addAll(productList);
+	}
+
+	public void addEmptyProduct(Integer ii) {
+		int previous_empty = emptyList.get(emptyList.size() - 1);
+		for (int i = ii - emptyList.size() - 1; i < emptyList.size(); i++) {
+			this.emptyList.add(i, previous_empty + 1);
+		}
+	}
+
+	public void addEmptyList(List<Integer> emptyList) {
+		this.emptyList.addAll(emptyList);
+	}
+
+	public List<_Product> getProductList() {
+		return productList;
+	}
+
+	public int getTotalProductionQuantity() {
+		return Calculator.getTotalProductionQuantity(productList);
+	}
+
+	public BigDecimal getTotalProductionTime() {
+		return Calculator.getTotalProductionTime(productList);
 	}
 
 	public BigDecimal getEmptyTime() {
-		if (pitchTime != null) {
-			return BigDecimal.valueOf(productList.size() + 1).multiply(pitchTime).subtract(getTotalProductTime());
-		} else {
-			return null;
-		}
+		return Calculator.getEmptyTime(this);
 	}
 
-	public _ProductLine getCalculatedProductLine() {
-		calculatedProductLine=new _ProductLine("calculated"+name,pitchTime);
+	public BigDecimal getSafedPitchTime() throws ClassNotFoundException, IOException {
+		return Calculator.getSafedPitchTime(productList);
+	}
 
+	public BigDecimal getIdlePitchTime() {
+		return Calculator.getIdlePitchTime(productList);
+	}
 
-		return calculatedProductLine;
+	public BigDecimal getMinimumPitchTime() throws ClassNotFoundException, IOException {
+		return Calculator.getMinimumPitchTime(productList);
+	}
 
+	public BigDecimal getAveragePitchTime() {
+		return Calculator.getAveragePitchTime(productList);
+	}
+
+	public int getQuantityOfSameProduct(_Product product) {
+		int quantity = 0;
+		for (int i = 0; i < productList.size(); i++) {
+			if (productList.get(i).equals(product)) {
+				quantity++;
+			}
+		}
+		return quantity;
+	}
+
+	public void output() throws ClassNotFoundException, IOException {
+		int productNum = getProductList().size();
+		System.out.println("EtÝå:" + getLineName());
+		System.out.println("" + getPitchTime());
+		System.out.println("" + getTotalProductionTime());
+		System.out.println("" + getTotalProductionQuantity());
+		System.out.println("" + getSafedPitchTime());
+		System.out.println("" + getAveragePitchTime());
+		System.out.println("" + getIdlePitchTime());
+		System.out.println("´v÷K>0:" + getEmptyPitchNumber());
+
+		System.out.println("" + getEmptyList());
+		System.out.println("" + getEmptyTime());
+		System.out.println("");
+		for (int i_production = 0; i_production < productNum; i_production++) {
+			_Product p = getProductList().get(i_production);
+			Integer emptyNumber = 0;
+			if (i_production != 0) {
+				emptyNumber = getEmptyList().get(i_production) - getEmptyList().get(i_production - 1);
+				for (int i = 0; i < emptyNumber; i++) {
+					System.out.println("B;9@B²");
+				}
+			}
+			System.out.println((i_production + 1) + " " + p.getName() + " " + p.getTime());
+		}
 	}
 }

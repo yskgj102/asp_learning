@@ -1,7 +1,7 @@
 package design.factory;
 
 public interface PizzaIngredientFactory {
-public Dough createDoughz();
+public Dough createDough();
 public Sauce createSauce();
 public Cheese createCheese();
 public Veggies[] createVeggies();
