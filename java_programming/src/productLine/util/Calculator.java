@@ -33,7 +33,6 @@ public class Calculator {
 		});
 	}
 
-
 	public static BigDecimal getSafedPitchTime(List<_Product> productList) throws ClassNotFoundException, IOException {
 		List<_Product> tmpProductList = deepcopy(productList);
 		/* ÀFF*/ Calculator.sortProductListByTimeDesc(tmpProductList);

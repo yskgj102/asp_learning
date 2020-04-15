@@ -19,15 +19,15 @@ public class Main_test {
 			} else {
 				productLine = new ProductLine(strategy);
 			}
-			productLine.addProducts("A", 1, 1);
-			productLine.addProducts("B", 15, 5);
-			productLine.addProducts("C", 10, 1);
-//			productLine.addProducts("D", 120, 40);
-//			productLine.addProducts("E", 158, 30);
-//			productLine.addProducts("F", 167, 5);
-//			productLine.addProducts("G", 197, 50);
-//			productLine.addProducts("H", 1999, 100);
-//			productLine.addProducts("I", 2000, 200);
+			productLine.addProducts("A", 1, 9);
+			productLine.addProducts("B", 2, 5);
+			productLine.addProducts("C", 3, 10);
+			productLine.addProducts("D", 4, 4);
+			productLine.addProducts("E", 5, 30);
+			productLine.addProducts("F", 6, 70);
+			productLine.addProducts("G", 7, 5);
+			productLine.addProducts("H", 8, 10);
+			productLine.addProducts("I", 9, 2);
 			productLine.getCalculatedProductLine().output();
 		} catch (Exception e) {
 			e.printStackTrace();
