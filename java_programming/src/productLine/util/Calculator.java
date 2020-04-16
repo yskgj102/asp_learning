@@ -81,7 +81,7 @@ public class Calculator {
 		}
 		return total_continuous_value;
 	}
-
+//
 	public static BigDecimal getEmptyTime(ProductLine line) {
 		BigDecimal pitchTime = line.getPitchTime();
 		List<_Product> productList = line.getProductList();
@@ -122,7 +122,7 @@ public class Calculator {
 		BigDecimal rightSideEq = BigDecimal.valueOf(getTotalProductionQuantity(productList)
 				+ emptyList.get(getTotalProductionQuantity(productList) - 1) + 1).multiply(pitchTime);
 		int compare_int = leftSideEq.compareTo(rightSideEq);
-	
+
 		return compare_int <= 0;
 	}
 
@@ -137,7 +137,7 @@ public class Calculator {
 		BigDecimal rightSideEq = BigDecimal.valueOf(getTotalProductionQuantity(productList)
 				+ emptyList.get(getTotalProductionQuantity(productList) - 1)).multiply(pitchTime);
 		int compare_int = leftSideEq.compareTo(rightSideEq);
-		
+
 		return compare_int == -1;
 	}
 
