@@ -53,13 +53,13 @@ public class Calculator {
 			throws ClassNotFoundException, IOException {
 		BigDecimal min_pitch_time = BigDecimal.valueOf(0);
 		List<_Product> tmpProductList = deepcopy(productList);
-	Calculator.sortProductListByTimeDesc(tmpProductList);
+		Calculator.sortProductListByTimeDesc(tmpProductList);
 		min_pitch_time = tmpProductList.get(0).getTime().divide(BigDecimal.valueOf(2), SCALE_INT, RoundingMode.UP);
 		return min_pitch_time;
 	}
 
 	public static boolean isAvairablePitchTime(ProductLine productLine) throws ClassNotFoundException, IOException {
-			return productLine.getPitchTime().compareTo(productLine.getMinimumPitchTime()) >= 0;
+		return productLine.getPitchTime().compareTo(productLine.getMinimumPitchTime()) >= 0;
 	}
 
 	public static int getTotalProductionQuantity(List<_Product> productList) {
@@ -72,6 +72,14 @@ public class Calculator {
 			total_production_time = total_production_time.add(productList.get(i).getTime());
 		}
 		return total_production_time;
+	}
+
+	public static BigDecimal getTotalCountinuousValue(List<BigDecimal> continuousValueList) {
+		BigDecimal total_continuous_value = new BigDecimal("0");
+		for (int i = 0; i < continuousValueList.size(); i++) {
+			total_continuous_value = total_continuous_value.add(continuousValueList.get(i));
+		}
+		return total_continuous_value;
 	}
 
 	public static BigDecimal getEmptyTime(ProductLine line) {
@@ -114,6 +122,37 @@ public class Calculator {
 		BigDecimal rightSideEq = BigDecimal.valueOf(getTotalProductionQuantity(productList)
 				+ emptyList.get(getTotalProductionQuantity(productList) - 1) + 1).multiply(pitchTime);
 		int compare_int = leftSideEq.compareTo(rightSideEq);
+	
+		return compare_int <= 0;
+	}
+
+	public static boolean isNotCountinuousProductList(List<_Product> productList, List<Integer> emptyList,
+			List<BigDecimal> continuousValueList,
+			BigDecimal pitchTime) {
+		if (productList.size() == 0 || emptyList.size() == 0) {
+			System.out.println("is Empty");
+			return true;
+		}
+		BigDecimal leftSideEq = getTotalProductionTime(productList).add(getTotalCountinuousValue(continuousValueList));
+		BigDecimal rightSideEq = BigDecimal.valueOf(getTotalProductionQuantity(productList)
+				+ emptyList.get(getTotalProductionQuantity(productList) - 1)).multiply(pitchTime);
+		int compare_int = leftSideEq.compareTo(rightSideEq);
+		
+		return compare_int == -1;
+	}
+
+	public static boolean isAvailableProductList(List<_Product> productList, List<Integer> emptyList,
+			List<BigDecimal> continuousValueList,
+			BigDecimal pitchTime) {
+		if (productList.size() == 0 || emptyList.size() == 0) {
+			System.out.println("is Empty");
+			return true;
+		}
+		BigDecimal leftSideEq = getTotalProductionTime(productList).add(getTotalCountinuousValue(continuousValueList));
+		BigDecimal rightSideEq = BigDecimal.valueOf(getTotalProductionQuantity(productList)
+				+ emptyList.get(getTotalProductionQuantity(productList) - 1) + 1).multiply(pitchTime);
+		int compare_int = leftSideEq.compareTo(rightSideEq);
+		System.out.println(leftSideEq + " " + rightSideEq);
 		return compare_int <= 0;
 	}
 

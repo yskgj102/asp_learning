@@ -13,6 +13,7 @@ public class ProductLine {
 	private BigDecimal pitchTime = null;
 	private List<_Product> productList = new ArrayList<>();
 	private List<Integer> emptyList = new ArrayList<>();/*M_n*/
+	private List<BigDecimal> continuousValueList = new ArrayList<>();/*C_n*/
 
 	public ProductLine(AbstractLineStrategy strategy) {
 		this.lineStrategy = strategy;
@@ -59,9 +60,25 @@ public class ProductLine {
 		return 0;
 	}
 
+	public int getEmptyPitchNumberTest() {
+		Integer min_value=Integer.MAX_VALUE;
+		for(Integer value:emptyList) {
+			min_value=Math.min(value, min_value);
+		}
+		if (emptyList.size() >= 1) {
+			return emptyList.get(emptyList.size() - 1)-min_value;
+		}
+		return 0;
+	}
+
+	public List<BigDecimal> getContinuousValue() {
+		return this.continuousValueList;
+	}
+
 	public void addProduct(_Product _product) throws Exception {
 		productList.add(_product);
 		emptyList.add(0);
+		continuousValueList.add(BigDecimal.valueOf(0));
 	}
 
 	public void addProducts(_Product _product, int quantity) throws Exception {
@@ -141,7 +158,7 @@ public class ProductLine {
 		System.out.println("SafedPitchTime:" + getSafedPitchTime());
 		System.out.println("AveragePitchTime:" + getAveragePitchTime());
 		System.out.println("IdlePitchTime:" + getIdlePitchTime());
-		System.out.println("EmptyPitchNumber:" + getEmptyPitchNumber());
+		System.out.println("EmptyPitchNumber:" + getEmptyPitchNumberTest());
 		System.out.println("EmptyList:" + getEmptyList());
 		System.out.println("EmptyTime:" + getEmptyTime());
 		System.out.println("");
@@ -151,7 +168,7 @@ public class ProductLine {
 			if (i_production != 0) {
 				emptyNumber = getEmptyList().get(i_production) - getEmptyList().get(i_production - 1);
 				for (int i = 0; i < emptyNumber; i++) {
-					System.out.println("i name time");
+					System.out.println("EMPTY");
 				}
 			}
 			System.out.println((i_production + 1) + " " + p.getName() + " " + p.getTime());

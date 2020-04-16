@@ -11,13 +11,13 @@ import java.util.List;
 
 import productLine.util.Calculator;
 
-public class MovingLineStrategy extends AbstractLineStrategy {
+public class MovingLineStrategyLogicTest extends AbstractLineStrategy {
 	private static final Integer HUGE_NUMBER = 1000000000;
 	private static final BigDecimal TINY_VALUE = BigDecimal.valueOf(0.001);
 
 	@Override
 	protected void setLineName() {
-		super.lineName = "Moving Line";
+		super.lineName = "Moving Line logic Test";
 	}
 
 	@Override
@@ -53,7 +53,6 @@ public class MovingLineStrategy extends AbstractLineStrategy {
 			List<_Product> tmpProductList = deepcopy(productLine.getProductList());
 			ArrayList<_Product> calculatedProductList = new ArrayList<>();
 			ArrayList<Integer> calculatedEmptyList = new ArrayList<>();
-			ArrayList<BigDecimal> calculatedContinuousValueList = new ArrayList<>();/*C_n*/
 			calculatedProductLine = new ProductLine(productLine.getLineStrategy(), productLine.getPitchTime());
 			int roopCounter = 0;
 			boolean emp_add_flg = false;
@@ -75,19 +74,14 @@ public class MovingLineStrategy extends AbstractLineStrategy {
 					}
 					calculatedEmptyList.add(emp_num);
 					if (Calculator.isAvailableProductList(calculatedProductList, calculatedEmptyList,
-							calculatedContinuousValueList,
 							productLine.getPitchTime())) {
-						if (sufficiencyRate.compareTo(Calculator.getSufficiencyRateOfX(calculatedProductList,
-								productLine, tmpProductList.get(i))) >= 0) {
-							if (Calculator.isNotCountinuousProductList(calculatedProductList, calculatedEmptyList,
-									calculatedContinuousValueList, productLine.getPitchTime())) {
-								emp_num = calculatedEmptyList.get(calculatedEmptyList.size() - 1) - 1;
-							}
-							sufficiencyRate = Calculator.getSufficiencyRateOfX(calculatedProductList, productLine,
-									tmpProductList.get(i));
+					//	if (sufficiencyRate.compareTo(Calculator.getSufficiencyRateOfX(calculatedProductList,
+					//			productLine, tmpProductList.get(i))) >= 0) {
+					//		sufficiencyRate = Calculator.getSufficiencyRateOfX(calculatedProductList, productLine,
+								//	tmpProductList.get(i));
 							i_rem = i;
 							emp_num_rem = emp_num;
-						}
+					//	}
 					}
 					calculatedProductList.remove(calculatedProductList.size() - 1);
 					calculatedEmptyList.remove(calculatedEmptyList.size() - 1);
@@ -122,9 +116,7 @@ public class MovingLineStrategy extends AbstractLineStrategy {
 			calculatedProductLine.addEmptyList(productLine.getEmptyList());
 			if (Calculator.isAvairablePitchTime(calculatedProductLine)) {
 				calculatedProductLine = executeALGORITHM1(calculatedProductLine);
-				//				if (calculatedProductLine.getEmptyPitchNumber() == 0) {
-
-				if (calculatedProductLine.getEmptyPitchNumberTest() == 0) {
+				if (calculatedProductLine.getEmptyPitchNumber() == 0) {
 					break;
 				}
 			} else {
